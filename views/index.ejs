@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <style>
+       *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+       }
+       html, body {
+        height: 100%;
+        width: 100%;
+       }
+       body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+       }
+       .chatui{
+        width: 60vw;
+        height: 70vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background-color: rgb(225, 225, 227);
+       }
+       .chatui .messages{
+        width: 100%;
+        padding: 5px;
+       }
+       .buttom{
+        display: flex;
+        width: 100%;
+        gap: 5px;
+       }
+       .buttom input{
+        width: 100%;
+        height: 1.5rem;
+       }
+       .buttom button{
+        width: 4rem;
+       }
+      .message{
+        background-color: antiquewhite;
+        padding: 0.5rem 1rem;
+        border-radius: 1rem;
+        width: fit-content;
+        margin-left: auto;
+
+      }
+      .messagecomming{
+        background-color: antiquewhite;
+        padding: 0.5rem 1rem;
+        border-radius: 1rem;
+        width: fit-content;
+        margin-right: auto;
+
+      }
+      .outGoingMessage{
+        margin-left: auto;
+      }
+      
+    </style>
+    
+   <div class="chatui">
+    <div class="messages">
+     
+    </div>
+      <div class="buttom">
+        <input type="text" placeholder="Enter text">
+        <button onclick="appendOutGoingMessage()">send</button>
+      
+    </div>
+   </div>
+
+  
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+
+        function appendOutGoingMessage(){
+          const message=document.querySelector('input').value
+          const template=`<div class="message outGoingMessage">
+            ${message}
+           </div>`
+           socket.emit('sony',message)
+           
+           document.querySelector('.messages').innerHTML += template
+           document.querySelector('input').value=""
+        }
+
+        function appendincommingMessage(incomingMessage){
+          const template=`<div class="messagecomming">
+            ${incomingMessage}
+           </div>`
+           document.querySelector('.messages').innerHTML += template
+        }
+
+        socket.on('sports',incomingMessage=>{
+          appendincommingMessage(incomingMessage)
+          console.log(incomingMessage)
+        })
+    </script> 
+  </body>
+</html>
